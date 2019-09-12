@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "grafo_encadeado.h"
+#include "grafo_encadeado_t.h"
 
 int main()
 {
