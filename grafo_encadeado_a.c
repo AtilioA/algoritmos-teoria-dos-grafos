@@ -13,9 +13,45 @@ void cria_grafo(Grafo *g, int vertices)
     }
 }
 
+void prof(Lista **adj, vertice v)
+{
+    // for (int i = 0; i < adj[v]->tamanho; i++)
+    // {
+    Celula *atual = adj[v]->primeiro;
+    adj[v]->visitado = 1;
+    while(atual->prox != NULL)
+    {
+        if (adj[atual->rotulo]->visitado == 0)
+        {
+            printf("de %i para %i\n", v, atual->rotulo);
+            prof(adj, atual->rotulo);
+        }
+        atual = atual->prox;
+    }
+}
+
+void busca_prof(Grafo *g)
+{
+    int i = 0;
+
+    for (i = 0; i < g->nVertices; i++)
+    {
+        g->adj[i]->visitado = 0;
+    }
+
+    for (i = 0; i < g->nVertices; i++)
+    {
+        if (g->adj[i]->visitado == 0)
+        {
+            prof(&g->adj[i], i);
+        }
+
+    }
+}
+
 void cria_lista(Lista *lista)
 {
-    lista->primeiro = (Celula *)malloc(sizeof(Celula)); // lista->primeiro será a cabeça da lista
+    lista->primeiro = (Celula *)malloc(sizeof(Celula));
     lista->ultimo = lista->primeiro;
     lista->ultimo->prox = NULL;
     lista->tamanho = 0;
@@ -37,6 +73,7 @@ int esta_vazia(Lista *lista)
 void insere_aresta(Grafo *g, vertice origem, vertice destino)
 {
     insere_lista(g->adj[origem], destino);
+    insere_lista(g->adj[destino], origem);
 }
 
 void insere_lista(Lista *lista, int chave)
@@ -63,7 +100,14 @@ void imprime_lista(Lista *lista)
         // Percorre a lista até chegar em NULL
         for (aux = lista->primeiro; aux->prox != NULL; aux = aux->prox)
         {
-            printf("%d ", aux->rotulo);
+            if (aux->prox->prox != NULL)
+            {
+                printf("%d -> ", aux->rotulo);
+            }
+            else
+            {
+                printf("%d ", aux->rotulo);
+            }
         }
     }
 }
@@ -72,6 +116,7 @@ void imprime_grafo(Grafo *g)
 {
     for (int i = 0; i < g->nVertices; i++)
     {
+        printf("[%i] -> ", i);
         imprime_lista(g->adj[i]);
         printf("\n");
     }

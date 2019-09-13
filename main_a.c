@@ -16,15 +16,16 @@ int main()
     printf("Inserindo vertices...\n");
     insere_aresta(grafo, 1, 8);
     insere_aresta(grafo, 0, 2);
-    insere_aresta(grafo, 3, 3);
     insere_aresta(grafo, 3, 8);
     insere_aresta(grafo, 3, 7);
-    // insere_aresta(grafo, 4, 2);
-    // insere_aresta(grafo, 5, 6);
-    // insere_aresta(grafo, 6, 5);
-    // insere_aresta(grafo, 3, 0);
+    insere_aresta(grafo, 4, 2);
+    insere_aresta(grafo, 5, 6);
+    insere_aresta(grafo, 6, 5);
+    insere_aresta(grafo, 3, 0);
     insere_aresta(grafo, 3, 2);
     insere_aresta(grafo, 9, 4);
+
+    busca_prof(grafo);
 
     printf("Imprimindo a lista:\n");
     imprime_grafo(grafo);

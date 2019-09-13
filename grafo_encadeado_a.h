@@ -3,7 +3,7 @@
 #define __grafo_encadeado_a_H
 
 typedef int vertice;
-typedef int aresta;
+typedef int bool;
 
 typedef struct Celula
 {
@@ -14,6 +14,7 @@ typedef struct Celula
 typedef struct Lista
 {
     int tamanho;
+    bool visitado;
     Celula *primeiro;
     Celula *ultimo;
 } Lista;
@@ -23,6 +24,9 @@ typedef struct Grafo
     int nVertices;
     Lista **adj;
 } Grafo;
+
+void prof(Lista **adj, vertice v);
+void busca_prof(Grafo *g);
 
 void cria_grafo(Grafo *g, int vertices);
 void destroi_grafo(Grafo *g);
