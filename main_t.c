@@ -8,14 +8,20 @@ int main()
     // tProduto item;
 
     Cria_grafo(grafo, 10);
-    insere_aresta(grafo, 0, 1);
     insere_aresta(grafo, 0, 2);
     insere_aresta(grafo, 0, 3);
-    insere_aresta(grafo, 0, 5);
     insere_aresta(grafo, 0, 4);
-    insere_aresta(grafo, 0, 6);
-    insere_aresta(grafo, 0, 7);
-    insere_aresta(grafo, 7, 1);
+    insere_aresta(grafo, 1, 9);
+    insere_aresta(grafo, 3, 7);
+    insere_aresta(grafo, 4, 9);
+    insere_aresta(grafo, 4, 5);
+    insere_aresta(grafo, 5, 9);
+    insere_aresta(grafo, 5, 8);
+    insere_aresta(grafo, 5, 6);
+    insere_aresta(grafo, 6, 8);
+    insere_aresta(grafo, 6, 7);
+    insere_aresta(grafo, 7, 8);
+    insere_aresta(grafo, 8, 9);
     printf("Lista vazia criada com sucesso!\n");
     printar_adjacencias(grafo);
     // printf("Inserindo itens...\n");
@@ -24,7 +30,7 @@ int main()
 
     printf("Imprimindo a lista:\n");
     // imprime_lista(grafo);
-
+    busca_em_depth(grafo);
     printf("\n\n");
     // destroiLista(grafo);
     printf("Lista destruida com sucesso!\n");

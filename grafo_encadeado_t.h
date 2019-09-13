@@ -14,6 +14,7 @@ typedef struct Celula
 typedef struct Lista
 {
     int tamanho;
+    int visitado;
     Celula *primeiro;
     Celula *ultimo;
 } Lista;
@@ -54,5 +55,7 @@ void Cria_grafo(Grafo *g, int vertices);
 void printar_adjacencias(Grafo *g);
 
 void destroi_grafo(Grafo *g);
+
+void busca_em_depth(Grafo *g);
 
 #endif

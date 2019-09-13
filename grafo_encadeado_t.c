@@ -40,10 +40,34 @@ void insere_lista(Lista *lista, vertice v){
     lista->tamanho++;
 }
 
+void buscaUtil(Lista **adjacencias, int vertice){
+    Lista *adj = adjacencias[vertice];
+    Celula *atual = adj->primeiro;
+    adjacencias[vertice]->visitado = 1;
+    while(atual->prox != NULL){
+        if(!(adjacencias[atual->rotulo]->visitado)){
+            printf("de %d para %d\n", vertice, atual->rotulo);
+            buscaUtil(adjacencias, atual->rotulo);
+        }
+        atual = atual->prox;
+    }
+}
+
+void busca_em_depth(Grafo *g){
+    for(int i = 0; i < g->nVertices; i++){
+        g->adjacencias[i]->visitado = 0;
+    }
+    for(int i = 0; i < g->nVertices; i++){
+        if(!(g->adjacencias[i]->visitado)){
+            buscaUtil(g->adjacencias, 0);
+        }
+    }
+}
 
 void insere_aresta(Grafo *g, vertice u, vertice v)
 {
     insere_lista(g->adjacencias[u], v);
+    insere_lista(g->adjacencias[v], u);
 }
 
 void printar_adjacencias(Grafo *g){
