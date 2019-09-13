@@ -52,14 +52,32 @@ void buscaUtil(Lista **adjacencias, int vertice){
         atual = atual->prox;
     }
 }
+/*
+void busca_length(Grafo *g){
+    Lista *pilha = malloc(sizeof(Lista));
+    cria_lista(pilha);
+    insere_lista(pilha, 0);
+    while(!esta_vazia(pilha)){
 
+    }
+}
+
+Celula *retira_fila(Lista *lista){
+    Celula *ret = lista->primeiro->prox;
+    if(ret == NULL){
+        return NULL;
+    }
+    lista->primeiro->prox = lista->primeiro->prox->prox;
+    return ret;
+}
+*/
 void busca_em_depth(Grafo *g){
     for(int i = 0; i < g->nVertices; i++){
         g->adjacencias[i]->visitado = 0;
     }
     for(int i = 0; i < g->nVertices; i++){
         if(!(g->adjacencias[i]->visitado)){
-            buscaUtil(g->adjacencias, 0);
+            buscaUtil(g->adjacencias, i);
         }
     }
 }

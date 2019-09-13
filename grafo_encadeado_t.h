@@ -25,6 +25,8 @@ typedef struct Grafo
     Lista **adjacencias;
 } Grafo;
 
+
+
 // Faz a lista ficar vazia
 void cria_lista(Lista *lista);
 
