@@ -54,6 +54,8 @@ void Cria_grafo(Grafo *g, int vertices);
 // Busca um produto pelo código
 // tProduto buscaCodigo(Lista *lista, int codigo);
 
+void busca_length(Grafo *g);
+
 void printar_adjacencias(Grafo *g);
 
 void destroi_grafo(Grafo *g);

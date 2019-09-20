@@ -10,9 +10,53 @@ void cria_lista(Lista *lista)
     lista->tamanho = 0;
 }
 
+void cria_fila(Lista *lista){
+    lista->primeiro = NULL;
+    lista->ultimo = NULL;
+    lista->tamanho = 0;
+}
+
+void enfileirar(int rotulo, Lista *lista){
+    if(lista->primeiro == NULL){
+        lista->primeiro = malloc(sizeof(Celula));
+        lista->ultimo = lista->primeiro;
+        lista->tamanho++;
+        lista->primeiro->rotulo = rotulo;
+        return;
+    }
+    lista->ultimo->prox = malloc(sizeof(Celula));
+    lista->ultimo->prox->rotulo = rotulo;
+    lista->ultimo = lista->ultimo->prox;
+    
+}
+
+Celula * desenfileirar(Lista *lista){
+    Celula *aux = lista->primeiro;
+    if(lista->primeiro->prox == NULL){
+        lista->primeiro = lista->primeiro->prox;
+        lista->ultimo = NULL;
+        return aux;
+    }
+    lista->primeiro = lista->primeiro->prox;
+    return aux;
+}
+
 int esta_vazia(Lista *lista)
 {
     if (lista->primeiro == lista->ultimo)
+    {
+        return 1;
+    }
+
+    else
+    {
+        return 0;
+    }
+}
+
+int esta_vazia_fila(Lista *lista)
+{
+    if (lista->primeiro == NULL)
     {
         return 1;
     }
@@ -52,25 +96,34 @@ void buscaUtil(Lista **adjacencias, int vertice){
         atual = atual->prox;
     }
 }
-/*
+
 void busca_length(Grafo *g){
-    Lista *pilha = malloc(sizeof(Lista));
-    cria_lista(pilha);
-    insere_lista(pilha, 0);
-    while(!esta_vazia(pilha)){
-
+    for(int i = 0; i < g->nVertices; i++){
+        g->adjacencias[i]->visitado = 0;
     }
-}
-
-Celula *retira_fila(Lista *lista){
-    Celula *ret = lista->primeiro->prox;
-    if(ret == NULL){
-        return NULL;
+    Lista *fila = malloc(sizeof(Lista));
+    Celula *aux2;
+    Celula *aux;
+    cria_fila(fila);
+    enfileirar(0, fila);
+    g->adjacencias[0]->visitado = 1;
+    while(!esta_vazia_fila(fila)){
+        aux = desenfileirar(fila);
+        aux2 = g->adjacencias[aux->rotulo]->primeiro;
+        printf("de %d para :", aux->rotulo);
+        while(aux2 != NULL){
+            if(!(g->adjacencias[aux2->rotulo]->visitado)){
+                enfileirar(aux2->rotulo, fila);
+                printf("|%d|", aux2->rotulo);
+                g->adjacencias[aux2->rotulo]->visitado = 1;
+            }
+            aux2 = aux2->prox;
+        }
+        printf("\n");
+        free(aux);
     }
-    lista->primeiro->prox = lista->primeiro->prox->prox;
-    return ret;
+    free(fila);
 }
-*/
 void busca_em_depth(Grafo *g){
     for(int i = 0; i < g->nVertices; i++){
         g->adjacencias[i]->visitado = 0;

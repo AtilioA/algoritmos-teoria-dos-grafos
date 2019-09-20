@@ -33,6 +33,8 @@ int main()
     busca_em_depth(grafo);
     printf("\n\n");
     // destroiLista(grafo);
+    busca_length(grafo);
+    printf("\n");
     printf("Lista destruida com sucesso!\n");
     destroi_grafo(grafo);
     free(grafo);
