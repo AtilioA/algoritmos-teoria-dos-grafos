@@ -19,7 +19,7 @@ void prof(Lista **adj, vertice v)
     // {
     Celula *atual = adj[v]->primeiro;
     adj[v]->visitado = 1;
-    while(atual->prox != NULL)
+    while (atual->prox != NULL)
     {
         if (adj[atual->rotulo]->visitado == 0)
         {
@@ -45,7 +45,6 @@ void busca_prof(Grafo *g)
         {
             prof(&g->adj[i], i);
         }
-
     }
 }
 
@@ -96,7 +95,6 @@ void imprime_lista(Lista *lista)
     {
         Celula *aux = NULL;
 
-        // printf("Quantidade de itens: %i\n", quantidade_lista(lista));
         // Percorre a lista até chegar em NULL
         for (aux = lista->primeiro; aux->prox != NULL; aux = aux->prox)
         {
@@ -124,48 +122,113 @@ void imprime_grafo(Grafo *g)
 
 void destroi_lista(Lista *lista)
 {
-    Celula *atual = lista->primeiro;
-    Celula *anterior = NULL;
-
-    while (atual != NULL)
+    if (lista != NULL)
     {
-        anterior = atual;
-        atual = atual->prox;
-        free(anterior);
-    }
+        Celula *atual = lista->primeiro;
+        Celula *anterior = NULL;
 
-    lista->tamanho = -1;
+        while (atual != NULL)
+        {
+            anterior = atual;
+            atual = atual->prox;
+            free(anterior);
+        }
+
+        lista->tamanho = -1;
+    }
 }
 
 void destroi_grafo(Grafo *grafo)
 {
-    for (int i = 0; i < grafo->nVertices; i++)
+    if (grafo != NULL)
     {
-        destroi_lista(grafo->adj[i]);
-        free(grafo->adj[i]);
-    }
-    // free(grafo);
-    free(grafo->adj);
-}
-
-/*
-tProduto buscaCodigo(Lista *lista, int codigo)
-{
-    Celula *atual = lista->primeiro->prox;
-
-    for (atual = lista->primeiro->prox; atual != NULL; atual = atual->prox)
-    {
-        if (codigo == atual->produto.codigo)
+        for (int i = 0; i < grafo->nVertices; i++)
         {
-            return atual->produto;
+            destroi_lista(grafo->adj[i]);
+            free(grafo->adj[i]);
         }
+        // free(grafo);
+        free(grafo->adj);
+    }
+}
+
+int contem(int nm, Lista *v)
+{
+    Celula *aux = v->primeiro;
+
+    while (aux->prox != NULL)
+    {
+        if (aux->rotulo == nm)
+        {
+            return 1;
+        }
+        aux = aux->prox;
     }
 
-    tProduto produtoInvalido;
-    produtoInvalido.codigo = -1;
-
-    printf("Nao ha produto com este codigo.\n");
-
-    return produtoInvalido;
+    return 0;
 }
-*/
+
+Lista *sub(Lista *v1, Lista *v2)
+{
+    Lista *sub = malloc(sizeof(Lista));
+    Celula *aux = v1->primeiro;
+    cria_lista(sub);
+
+    while (aux->prox != NULL)
+    {
+        if (!contem(aux->rotulo, v2))
+        {
+            insere_lista(sub, aux->rotulo);
+        }
+        aux = aux->prox;
+    }
+
+    return sub;
+}
+
+Lista *uniao_listas(Lista *v1, Lista *v2)
+{
+    Celula *aux = v1->primeiro;
+    Celula *aux2 = v2->primeiro;
+    Lista *uni = malloc(sizeof(Lista));
+    cria_lista(uni);
+
+    while (aux->prox != NULL)
+    {
+        insere_lista(uni, aux->rotulo);
+        aux = aux->prox;
+    }
+    while (aux2->prox != NULL)
+    {
+        if (!(contem(aux2->rotulo, v1)))
+        {
+            insere_lista(uni, aux2->rotulo);
+        }
+        aux2 = aux2->prox;
+    }
+    return uni;
+}
+
+void cria_fila(Lista *fila)
+{
+    fila->primeiro = NULL;
+    fila->ultimo = NULL;
+    fila->tamanho = 0;
+}
+
+void enfileirar(int rotulo, Lista *fila)
+{
+    if (fila->primeiro == NULL)
+    {
+        fila->primeiro = malloc(sizeof(Celula));
+        fila->ultimo = fila->primeiro;
+        fila->tamanho++;
+        fila->primeiro->rotulo = rotulo;
+        return;
+    }
+
+    fila->ultimo->prox = malloc(sizeof(Celula));
+    fila->ultimo->prox->rotulo = rotulo;
+    fila->ultimo = fila->ultimo->prox;
+    fila->tamanho++;
+}

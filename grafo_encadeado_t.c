@@ -334,25 +334,3 @@ void destroi_grafo(Grafo *g){
     free(g->matrizAdj);
     free(g->adjacencias);
 }
-
-/*
-tProduto buscaCodigo(Lista *lista, int codigo)
-{
-    Celula *atual = lista->primeiro->prox;
-
-    for (atual = lista->primeiro->prox; atual != NULL; atual = atual->prox)
-    {
-        if (codigo == atual->produto.codigo)
-        {
-            return atual->produto;
-        }
-    }
-
-    tProduto produtoInvalido;
-    produtoInvalido.codigo = -1;
-
-    printf("Nao ha produto com este codigo.\n");
-
-    return produtoInvalido;
-}
-*/
