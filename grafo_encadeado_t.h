@@ -23,6 +23,7 @@ typedef struct Grafo
 {
     int nVertices;
     Lista **adjacencias;
+    int **matrizAdj;
 } Grafo;
 
 
@@ -61,5 +62,7 @@ void printar_adjacencias(Grafo *g);
 void destroi_grafo(Grafo *g);
 
 void busca_em_depth(Grafo *g);
+
+void imprimir_matriz(Grafo *g);
 
 #endif

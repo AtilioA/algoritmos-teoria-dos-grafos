@@ -74,6 +74,10 @@ void Cria_grafo(Grafo *g, int vertices){
         g->adjacencias[i] = malloc(sizeof(Lista));
         cria_lista(g->adjacencias[i]);
     }
+    g->matrizAdj = malloc(sizeof(int *) * vertices);
+    for(int i = 0; i < vertices; i++){
+        g->matrizAdj[i] = calloc(vertices, sizeof(int));
+    }
 }
 
 void insere_lista(Lista *lista, vertice v){
@@ -94,6 +98,15 @@ void buscaUtil(Lista **adjacencias, int vertice){
             buscaUtil(adjacencias, atual->rotulo);
         }
         atual = atual->prox;
+    }
+}
+
+void imprimir_matriz(Grafo *g){
+    for(int i = 0; i < g->nVertices; i++){
+        for(int j = 0; j < g->nVertices; j++){
+            printf("%d ", g->matrizAdj[i][j]);
+        }
+        printf("\n");
     }
 }
 
@@ -139,6 +152,8 @@ void insere_aresta(Grafo *g, vertice u, vertice v)
 {
     insere_lista(g->adjacencias[u], v);
     insere_lista(g->adjacencias[v], u);
+    g->matrizAdj[u][v] = 1;
+    g->matrizAdj[v][u] = 1;
 }
 
 void printar_adjacencias(Grafo *g){
@@ -193,6 +208,10 @@ void destroi_grafo(Grafo *g){
         destroi_lista(g->adjacencias[i]);
         free(g->adjacencias[i]);
     }
+    for(int i = 0; i < g->nVertices; i++){
+        free(g->matrizAdj[i]);
+    }
+    free(g->matrizAdj);
     free(g->adjacencias);
 }
 

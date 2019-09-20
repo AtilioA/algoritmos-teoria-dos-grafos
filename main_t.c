@@ -36,6 +36,7 @@ int main()
     busca_length(grafo);
     printf("\n");
     printf("Lista destruida com sucesso!\n");
+    imprimir_matriz(grafo);
     destroi_grafo(grafo);
     free(grafo);
     return 0;
