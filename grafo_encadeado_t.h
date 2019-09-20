@@ -27,6 +27,8 @@ typedef struct Grafo
 } Grafo;
 
 
+int contem(int nm, Lista *v);
+
 
 // Faz a lista ficar vazia
 void cria_lista(Lista *lista);

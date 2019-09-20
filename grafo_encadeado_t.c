@@ -27,17 +27,19 @@ void enfileirar(int rotulo, Lista *lista){
     lista->ultimo->prox = malloc(sizeof(Celula));
     lista->ultimo->prox->rotulo = rotulo;
     lista->ultimo = lista->ultimo->prox;
-    
+    lista->tamanho++;
 }
 
 Celula * desenfileirar(Lista *lista){
     Celula *aux = lista->primeiro;
-    if(lista->primeiro->prox == NULL){
-        lista->primeiro = lista->primeiro->prox;
+    if(lista->primeiro == lista->ultimo && lista->primeiro != NULL){
+        lista->primeiro = NULL;
         lista->ultimo = NULL;
+        lista->tamanho--;
         return aux;
     }
     lista->primeiro = lista->primeiro->prox;
+    lista->tamanho--;
     return aux;
 }
 
@@ -60,11 +62,7 @@ int esta_vazia_fila(Lista *lista)
     {
         return 1;
     }
-
-    else
-    {
-        return 0;
-    }
+    return 0;
 }
 
 void Cria_grafo(Grafo *g, int vertices){
@@ -78,6 +76,22 @@ void Cria_grafo(Grafo *g, int vertices){
     for(int i = 0; i < vertices; i++){
         g->matrizAdj[i] = calloc(vertices, sizeof(int));
     }
+}
+
+int contem(int nm, Lista *v){
+    Celula *aux = v->primeiro;
+    while(aux->prox != NULL){
+        if(aux->rotulo == nm){
+            return 1;
+        }
+        aux = aux->prox;
+    }
+    return 0;
+}
+
+Lista *uniao_listas(Lista *v1, Lista *v2){
+    Celula *aux = v1->primeiro;
+
 }
 
 void insere_lista(Lista *lista, vertice v){
@@ -174,19 +188,18 @@ int quantidade_lista(Lista *lista)
     return lista->tamanho;
 }
 
-/*
+
 void imprime_lista(Lista *lista)
 {
     Celula *aux = NULL;
-
-    printf("Quantidade de itens: %i\n", quantidade_lista(lista));
     // Percorre a lista até chegar em NULL
-    for (aux = lista->primeiro; aux != NULL; aux = aux->prox)
+    for (aux = lista->primeiro; aux->prox != NULL; aux = aux->prox)
     {
-        imprimeProduto(aux->produto);
+        printf("%d ", aux->rotulo);
     }
+    printf("\n");
 }
-*/
+
 
 void destroi_lista(Lista *lista)
 {

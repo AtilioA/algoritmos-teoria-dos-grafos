@@ -27,7 +27,6 @@ int main()
     // printf("Inserindo itens...\n");
     // item = criaProduto(1,"Sabonete", 10, 3.90);
     // insere(item, &lista);
-
     printf("Imprimindo a lista:\n");
     // imprime_lista(grafo);
     busca_em_depth(grafo);
