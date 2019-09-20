@@ -29,9 +29,16 @@ typedef struct Grafo
 
 int contem(int nm, Lista *v);
 
-
+Lista *uniao_listas(Lista *v1, Lista *v2);
 // Faz a lista ficar vazia
 void cria_lista(Lista *lista);
+
+void insere_lista(Lista *lista, vertice v);
+
+Lista *sub(Lista *v1, Lista *v2);
+
+int conexprim(Grafo *g);
+int conex(Lista *V, Grafo *g);
 
 // Verifica se a lista está vazia
 int esta_vazia(Lista *lista);

@@ -89,9 +89,113 @@ int contem(int nm, Lista *v){
     return 0;
 }
 
+Lista *sub(Lista *v1, Lista *v2){
+    Lista *sub = malloc(sizeof(Lista));
+    Celula *aux = v1->primeiro;
+    cria_lista(sub);
+    while(aux->prox != NULL){
+        if(!contem(aux->rotulo, v2)){
+            insere_lista(sub, aux->rotulo);
+        }
+        aux = aux->prox;
+    }
+    return sub;
+}
+
 Lista *uniao_listas(Lista *v1, Lista *v2){
     Celula *aux = v1->primeiro;
+    Celula *aux2 = v2->primeiro;
+    Lista *uni = malloc(sizeof(Lista));
+    cria_lista(uni);
+    while(aux->prox != NULL){
+        insere_lista(uni, aux->rotulo);
+        aux = aux->prox;
+    }
+    while(aux2->prox != NULL){
+        if(!(contem(aux2->rotulo, v1))){
+            insere_lista(uni, aux2->rotulo);
+        }
+        aux2 = aux2->prox;
+    }
+    return uni;
+}
 
+int conexprim(Grafo *g){
+    Lista *Vzao = malloc(sizeof(Lista));
+    cria_lista(Vzao);
+    for(int i = 0 ; i < g->nVertices; i++){
+        insere_lista(Vzao, i);
+    }
+    int k = conex(Vzao, g);
+    destroi_lista(Vzao);
+    free(Vzao);
+    return k;
+}
+
+Lista *gama(int v, Grafo *g){
+    return g->adjacencias[v];
+}
+
+Lista *gamaT(Lista *ver, Grafo *g){
+    Celula *aux = ver->primeiro;
+    Lista *lixo;
+    Lista *all = malloc(sizeof(Lista));
+    cria_lista(all);
+    while(aux->prox != NULL){
+        lixo = all;
+        all = uniao_listas(all, gama(aux->rotulo, g));
+        destroi_lista(lixo);
+        free(lixo);
+        aux = aux->prox;
+    }
+    return all;
+}
+
+int conex(Lista *V, Grafo *g){
+    int v;
+    Lista *lixo;
+    Celula *aux = V->primeiro;
+    if(aux->prox != NULL){
+        v = aux->rotulo;
+    }
+    Lista *rzao = malloc(sizeof(Lista));
+    cria_lista(rzao);
+    insere_lista(rzao, v);
+    Lista *Ylon = NULL;
+    Lista *subs = sub(gamaT(rzao, g),rzao);
+    Lista *lixos = subs;
+    while(!esta_vazia(subs)){
+        lixo = Ylon;
+        Ylon = sub(gamaT(rzao, g),rzao);
+        destroi_lista(lixo);
+        free(lixo);
+        lixo = rzao;
+        rzao = uniao_listas(rzao, Ylon);
+        destroi_lista(lixo);
+        free(lixo);
+        lixo = subs;
+        subs = sub(gamaT(rzao, g),rzao);
+        destroi_lista(lixo);
+        free(lixo);
+    }
+    lixo = Ylon;
+    Ylon = rzao;
+    destroi_lista(lixo);
+    free(lixo);
+    Lista *otroV = sub(V, Ylon);
+    if(!esta_vazia(otroV)){
+        int k = conex(otroV, g) + 1;
+        destroi_lista(otroV);
+        free(otroV);
+        destroi_lista(rzao);
+        free(rzao);
+        destroi_lista(Ylon);
+        free(Ylon);
+        return k;
+    }
+    destroi_lista(otroV);
+    free(otroV);
+    return 1;
 }
 
 void insere_lista(Lista *lista, vertice v){
@@ -203,6 +307,9 @@ void imprime_lista(Lista *lista)
 
 void destroi_lista(Lista *lista)
 {
+    if(lista == NULL){
+        return;
+    }
     Celula *atual = lista->primeiro;
     Celula *anterior = NULL;
 
