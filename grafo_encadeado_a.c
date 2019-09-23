@@ -30,20 +30,21 @@ void prof(Lista **adj, vertice v)
     }
 }
 
+
 void busca_prof(Grafo *g)
 {
     int i = 0;
 
-    for (i = 0; i < g->nVertices; i++)
+    for (i; i < g->nVertices; i++)
     {
         g->adj[i]->visitado = 0;
     }
 
-    for (i = 0; i < g->nVertices; i++)
+    for (i; i < g->nVertices; i++)
     {
         if (g->adj[i]->visitado == 0)
         {
-            prof(&g->adj[i], i);
+            prof(g->adj, i);
         }
     }
 }
