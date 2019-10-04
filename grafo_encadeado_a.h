@@ -37,9 +37,6 @@ void cria_lista(Lista *lista);
 // Verifica se a lista está vazia
 int esta_vazia(Lista *lista);
 
-// Verifica se existe um produto com um dado código na lista
-// int codigoExistente(int codigo, Lista *lista);
-
 void insere_lista(Lista *lista, int chave);
 
 // Insere um vertice adjacente na lista do vertice de origem
@@ -55,9 +52,5 @@ void destroi_lista(Lista *lista);
 void imprime_lista(Lista *lista);
 
 void imprime_grafo(Grafo *g);
-
-// Busca um produto pelo código
-// tProduto buscaCodigo(Lista *lista, int codigo);
-
 
 #endif
