@@ -162,11 +162,17 @@ int conex(Lista *V, Grafo *g){
     cria_lista(rzao);
     insere_lista(rzao, v);
     Lista *Ylon = NULL;
-    Lista *subs = sub(gamaT(rzao, g),rzao);
+    Lista *gamalixo = gamaT(rzao, g);
+    Lista *subs = sub(gamalixo,rzao);
+    destroi_lista(gamalixo);
+    free(gamalixo);
     Lista *lixos = subs;
     while(!esta_vazia(subs)){
         lixo = Ylon;
-        Ylon = sub(gamaT(rzao, g),rzao);
+        gamalixo = gamaT(rzao, g);
+        Ylon = sub(gamalixo,rzao);
+        destroi_lista(gamalixo);
+        free(gamalixo);
         destroi_lista(lixo);
         free(lixo);
         lixo = rzao;
@@ -174,7 +180,10 @@ int conex(Lista *V, Grafo *g){
         destroi_lista(lixo);
         free(lixo);
         lixo = subs;
-        subs = sub(gamaT(rzao, g),rzao);
+        gamalixo = gamaT(rzao, g);
+        subs = sub(gamalixo,rzao);
+        destroi_lista(gamalixo);
+        free(gamalixo);
         destroi_lista(lixo);
         free(lixo);
     }
@@ -191,8 +200,16 @@ int conex(Lista *V, Grafo *g){
         free(rzao);
         destroi_lista(Ylon);
         free(Ylon);
+        destroi_lista(subs);
+        free(subs);
         return k;
     }
+    destroi_lista(rzao);
+    free(rzao);
+    destroi_lista(Ylon);
+    free(Ylon);
+    destroi_lista(subs);
+    free(subs);
     destroi_lista(otroV);
     free(otroV);
     return 1;
