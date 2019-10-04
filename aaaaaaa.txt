@@ -1,0 +1,18 @@
+Case #1:
+a,c,
+b,
+2 connected components
+
+Case #2:
+a,g,c,b,
+d,e,f,
+h,i,j,
+3 connected components
+
+Case #3:
+a,b,c,
+d,
+e,f,
+3 connected components
+
+

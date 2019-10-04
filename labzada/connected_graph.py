@@ -68,5 +68,6 @@ if __name__ == "__main__":
         print("Case #{}:".format(i + 1))
         componentes = busca_prof(G)
         print("{0} connected components".format(componentes))
-    
+        print("")
+    print("")
       
