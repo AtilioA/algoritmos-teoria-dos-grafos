@@ -25,7 +25,8 @@ class Grafo(object):
 
 def busca_util(vertice, grafo):
     vertice[1] = 1
-    print(str(vertice[0]), end=",")
+    lista = []
+    lista.append(vertice[0])
     for i in grafo.vertice_mark:
         if vertice[0] == i[0]:
             i[1] = 1
@@ -34,7 +35,9 @@ def busca_util(vertice, grafo):
         if vertice[0] == i[0]:
             for j in grafo.vertice_mark:
                 if i[1] == j[0] and j[1] == 0:
-                    busca_util(j, grafo)
+                    lista = lista + busca_util(j, grafo)
+    
+    return lista
 
 
 def busca_prof(grafo):
@@ -44,7 +47,10 @@ def busca_prof(grafo):
     for vertice in grafo.vertice_mark:
         if vertice[1] == 0:
             componentes += 1
-            busca_util(vertice, grafo)
+            vertices = busca_util(vertice, grafo)
+            vertices.sort()
+            for i in vertices:
+                print(str(i), end=",")
             print("")
     return componentes
 
@@ -69,5 +75,4 @@ if __name__ == "__main__":
         componentes = busca_prof(G)
         print("{0} connected components".format(componentes))
         print("")
-    print("")
       
