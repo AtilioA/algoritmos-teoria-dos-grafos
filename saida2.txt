@@ -1,0 +1,36 @@
+Case #1:
+['a']
+['c', 'a']
+a,c,
+['b']
+b,
+2 connected components
+
+Case #2:
+['j']
+['i', 'j']
+['h', 'i', 'j']
+h,i,j,
+['g']
+['a', 'g']
+['b', 'a', 'g']
+['c', 'a', 'b', 'g']
+a,b,c,g,
+['f']
+['e']
+['d', 'f', 'e']
+d,e,f,
+3 connected components
+
+Case #3:
+['e']
+['f', 'e']
+e,f,
+['b']
+['c', 'b']
+['a', 'b', 'c']
+a,b,c,
+['d']
+d,
+3 connected components
+

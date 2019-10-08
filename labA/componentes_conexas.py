@@ -7,10 +7,6 @@ class Vertice(object):
     def __init__(self, rotulo):
         self.rotulo = rotulo
         self.visitado = False
-    #     self.adj = []
-
-    # def adiciona_aresta(self, v):
-    #     self.adj.append(v)
 
 
 class Grafo(object):
@@ -34,25 +30,27 @@ def busca_util(vertice, grafo):
         if vertice.rotulo == elemento.rotulo:
             elemento.visitado = True
 
-    for conexao in grafo.arestas:
+    for conexao in sorted(list(grafo.arestas)):
         if vertice.rotulo == conexao[0]:
             for j in grafo.vertices:
                 if conexao[1] == j.rotulo and j.visitado is False:
                     rotulos = rotulos + busca_util(j, grafo)
-    # print(f"Rotulos: {rotulos}")
-    return rotulos
+
+    print(rotulos)
+    return sorted(rotulos)
 
 
 def busca_prof(grafo):
     componentes = 0
-    for vertice in grafo.vertices:
+    
+    for vertice in list(grafo.vertices):
         vertice.visitado = False
-    for vertice in grafo.vertices:
+    for vertice in list(grafo.vertices):
         if vertice.visitado is False:
             componentes += 1
             rotulosVertices = busca_util(vertice, grafo)
             # print(rotulosVertices)
-            rotulosVertices.sort()
+            # rotulosVertices.sort()
             # print(rotulosVertices)
             for rotulo in rotulosVertices:
                 print(rotulo, end=",")

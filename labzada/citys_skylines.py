@@ -6,7 +6,7 @@ class Grafo(object):
         self.arestas = set()
         self.matriz = []
         self.matriz_custo = []
-    
+
     def adicionar_vertice(self, vertice):
         self.vertices.add(vertice)
         self.matriz.append([])
@@ -25,22 +25,16 @@ class Grafo(object):
         self.matriz[vertices[1]].append(vertices[0])
         self.matriz_custo[vertices[0]].append((vertices[1], custo))
         self.matriz_custo[vertices[1]].append((vertices[0], custo))
-    
+
     def vizinhos(self, vertice):
         return set([x[0][1] for x in list(self.arestas) if x[0][0] == vertice])
-    
+
     def custo_entre(self, u, v):
         for i in self.arestas:
             if u == i[0][0] and v == i[0][1]:
                 return i[1]
         return 0
-    
-    def teste_custo(self, u, v):
-        r = self.matriz_custo[u]
-        s = [x[1] for x in r if x[0] == v]
-        if s == []:
-            return 0
-        return s[0]
+        
 
 def nequal(a, b):
     if a == b:
@@ -76,7 +70,7 @@ def min(a, b):
 #                 if custo < distancias[i][1]:
 #                     distancias[i][1] = custo
 #                     anterior[i] = k[0]
-    
+
 #     return distancias
 
 def custo_ate(grafo, inicio, qtdRota):
@@ -101,7 +95,7 @@ def custo_ate(grafo, inicio, qtdRota):
             custo = min(distancias[i][1], distancias[k[0]][1] + grafo.teste_custo(k[0], i))
             if custo < distancias[i][1]:
                 distancias[i][1] = custo
-    
+
     return distancias
 
 H = Grafo()
