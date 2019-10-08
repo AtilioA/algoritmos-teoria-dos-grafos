@@ -3,10 +3,10 @@ class Grafo(object):
         self.vertices = set()
         self.vertice_mark = []
         self.arestas = set()
-    
+
     def adicionar_vertice(self, vertice):
         self.vertices.add(vertice)
-        
+
     def adicionar_mark(self, vertice):
         self.vertice_mark.append([vertice, 0])
 
@@ -23,6 +23,7 @@ class Grafo(object):
             conj = conj + list(self.vizinhos(x))
         return set(conj)
 
+
 def busca_util(vertice, grafo):
     vertice[1] = 1
     lista = []
@@ -36,7 +37,6 @@ def busca_util(vertice, grafo):
             for j in grafo.vertice_mark:
                 if i[1] == j[0] and j[1] == 0:
                     lista = lista + busca_util(j, grafo)
-    
     return lista
 
 
@@ -55,7 +55,6 @@ def busca_prof(grafo):
     return componentes
 
 if __name__ == "__main__":
-    
     N = int(input())
     for i in range(N):
         entrada = input().split(' ')
@@ -63,16 +62,15 @@ if __name__ == "__main__":
         e = int(entrada[1])
         G = Grafo()
         for j in range(v):
-            G.adicionar_mark([chr(k) for k in range(ord('a'),ord('z')+1)][j])
+            G.adicionar_mark([chr(k) for k in range(ord('a'), ord('z') + 1)][j])
         for j in range(e):
             entradaVertices = input().split(' ')
             v1 = entradaVertices[0]
             v2 = entradaVertices[1]
-            #print(f"v1: {v1}, v2: {v2}")
+            # print(f"v1: {v1}, v2: {v2}")
             G.ligar((v1, v2))
 
         print("Case #{}:".format(i + 1))
         componentes = busca_prof(G)
         print("{0} connected components".format(componentes))
         print("")
-      
