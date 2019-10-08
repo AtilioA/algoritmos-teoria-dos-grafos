@@ -14,17 +14,16 @@ class Vertice(object):
 
 
 class Grafo(object):
-    def __init__(self, nVertices):
-        self.nVertices = nVertices
+    def __init__(self):
         self.vertices = set()
         self.arestas = set()
 
     def adicionar_vertice(self, vertice):
         self.vertices.add(vertice)
 
-    def ligar(self, u, v):
-        self.arestas.add((u, v))
-        self.arestas.add((v, u))
+    def ligar(self, vertices):
+        self.arestas.add(vertices)
+        self.arestas.add((vertices[::-1])) #  reflexivo
 
 
 def busca_util(vertice, grafo):
@@ -40,6 +39,7 @@ def busca_util(vertice, grafo):
             for j in grafo.vertices:
                 if conexao[1] == j.rotulo and j.visitado is False:
                     rotulos = rotulos + busca_util(j, grafo)
+    # print(f"Rotulos: {rotulos}")
     return rotulos
 
 
@@ -51,20 +51,23 @@ def busca_prof(grafo):
         if vertice.visitado is False:
             componentes += 1
             rotulosVertices = busca_util(vertice, grafo)
+            # print(rotulosVertices)
             rotulosVertices.sort()
+            # print(rotulosVertices)
             for rotulo in rotulosVertices:
                 print(rotulo, end=",")
             print("")
     return componentes
 
+
 CONST = CONST()
 if __name__ == "__main__":
-    nGrafos = int(input())
+    nGrafos = int(input().strip())
     for i in range(nGrafos):
         entrada = input().strip().split(' ')
         v = int(entrada[0])
         e = int(entrada[1])
-        G = Grafo(nGrafos)
+        G = Grafo()
         vertices = []
         for j in range(v):
             G.adicionar_vertice(Vertice(CONST.ALFABETO[j]))
@@ -72,9 +75,10 @@ if __name__ == "__main__":
             entradaVertices = input().strip().split(' ')
             v1 = entradaVertices[0]
             v2 = entradaVertices[1]
-            G.ligar(v1, v2)
+            # print(f"v1: {v1}, v2: {v2}")
+            G.ligar((v1, v2))
 
         print("Case #{}:".format(i + 1))
         componentes = busca_prof(G)
-        print("{0} connected components".format(componentes))
+        print("{} connected components".format(componentes))
         print("")

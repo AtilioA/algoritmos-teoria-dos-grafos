@@ -48,7 +48,9 @@ def busca_prof(grafo):
         if vertice[1] == 0:
             componentes += 1
             vertices = busca_util(vertice, grafo)
+            # print(vertices)
             vertices.sort()
+            # print(vertices)
             for i in vertices:
                 print(str(i), end=",")
             print("")
@@ -69,8 +71,9 @@ if __name__ == "__main__":
             v2 = entradaVertices[1]
             # print(f"v1: {v1}, v2: {v2}")
             G.ligar((v1, v2))
+            # print(G.arestas)
 
         print("Case #{}:".format(i + 1))
         componentes = busca_prof(G)
-        print("{0} connected components".format(componentes))
+        print("{} connected components".format(componentes))
         print("")
