@@ -1,5 +1,3 @@
-import math
-
 class Vertice:
     def __init__(self, rotulo):
         self.rotulo = rotulo
@@ -32,6 +30,7 @@ class Grafo:
             if j[0] == i:
                 return j[1]
 
+
 def infnite(vertice1, vertice2):
     if vertice1 == vertice2:
         return 0
@@ -39,8 +38,8 @@ def infnite(vertice1, vertice2):
         return float('inf')
 
 
-def dj_kastra(grafo, inicio, qtdCidades):
-    distancias = [[x, infnite(inicio, x.rotulo)] for x in grafo.vertices]
+def dj_kastra(grafo, cidadeConserto, qtdRota):
+    distancias = [[x, infnite(cidadeConserto, x.rotulo)] for x in grafo.vertices]
     aberto = set(grafo.vertices.copy())
     fechado = set()
 
@@ -53,7 +52,10 @@ def dj_kastra(grafo, inicio, qtdCidades):
                 k = i
         fechado = fechado | set([k[0]])
         aberto = aberto - set([k[0]])
-        vizinhosK = grafo.vizinhos(k[0].rotulo)
+        if k[0].rotulo in range(qtdRota):
+            vizinhosK = [x for x in grafo.vizinhos(k[0].rotulo) if x[0] == k[0].rotulo + 1]
+        else:
+            vizinhosK = grafo.vizinhos(k[0].rotulo)
         vizinho_sem_peso = [x[0] for x in vizinhosK]
         for i in aberto:
             if i.rotulo in vizinho_sem_peso:
@@ -64,21 +66,24 @@ def dj_kastra(grafo, inicio, qtdCidades):
 
 
 if __name__ == "__main__":
-    G = Grafo(6)
-    G.ligar_vertices(0, 1, 10)
-    G.ligar_vertices(0, 2, 5)
-    G.ligar_vertices(1, 4, 4)
-    G.ligar_vertices(1, 3, 1)
-    G.ligar_vertices(2, 4, 6)
-    G.ligar_vertices(2, 1, 4)
-    G.ligar_vertices(3, 5, 3)
-    G.ligar_vertices(3, 4, 2)
-    G.ligar_vertices(4, 5, 1)
-    # for i in G.vizinhos(1):
-    #     print(i[0])
-    # print(G.vizinhos(0))
-    # print(dj)
-    for i in dj_kastra(G, 0, 5):
-        print(i[1])
-
-    pass
+    n = 1
+    m = 1
+    c = 1
+    k = 1
+    while n != 0 or m != 0 or c != 0 or k != 0:
+        entrada = input().split(' ')
+        n = int(entrada[0])
+        m = int(entrada[1])
+        c = int(entrada[2])
+        k = int(entrada[3])
+        if n == 0 and m == 0 and c == 0 and k == 0:
+            break
+        Rota = Grafo(n)
+        for i in range(m):
+            arestas = input().split(' ')
+            u = int(arestas[0])
+            v = int(arestas[1])
+            custo = int(arestas[2])
+            Rota.ligar_vertices(u, v, custo)
+        print(str(dj_kastra(Rota, k, c)[c-1][1]))
+        #print(str(Rota.matriz_custo))
