@@ -1,88 +1,86 @@
 # https://www.geeksforgeeks.org/strongly-connected-components/
-
 # Kosaraju's algorithm
 
 from collections import defaultdict
 
-#This class represents a directed graph using adjacency list representation
-class Graph:
 
-    def __init__(self,vertices):
-        self.V= vertices #No. of vertices
-        self.graph = defaultdict(list) # default dictionary to store graph
+# Grafo direcionado com lista de adjacências
+class Grafo:
+    def __init__(self, nVertices):
+        # default dictionary para armazenar o grafo
+        self.grafo = defaultdict(list)
+        self.nVertices = nVertices
+        self.visitado = [False] * (self.nVertices)
+        # Inicializa listas de adjacências dos vértices
+        for i in range(nVertices):
+            self.grafo[i] = []
 
-    # function to add an edge to graph
-    def addEdge(self,u,v):
-        self.graph[u].append(v)
+    def adiciona_aresta(self, u, v):
+        # O vértice u possui aresta incidindo exteriormente para v
+        self.grafo[u].append(v)
 
-    # A function used by DFS
-    def DFSUtil(self,v,visited):
-        # Mark the current node as visited and print it
-        visited[v]= True
-        print v,
-        #Recur for all the vertices adjacent to this vertex
-        for i in self.graph[v]:
-            if visited[i]==False:
-                self.DFSUtil(i,visited)
+    def busca(self, v):
+        # Marca o vértice de entrada como visitado
+        self.visitado[v] = True
+        print(v, end=' ')
 
+        # Recursão com os vértices adjacentes ao de entrada
+        for i in self.grafo[v]:
+            if self.visitado[i] is False:
+                self.busca(i)
 
-    def fillOrder(self,v,visited, stack):
-        # Mark the current node as visited
-        visited[v]= True
-        #Recur for all the vertices adjacent to this vertex
-        for i in self.graph[v]:
-            if visited[i]==False:
-                self.fillOrder(i, visited, stack)
-        stack = stack.append(v)
+    def percorre_adiciona_pilha(self, v, pilhaDeVertices):
+        # Marca o vértice de entrada como visitado
+        self.visitado[v] = True
 
+        # Recursão com os vértices adjacentes ao de entrada
+        for i in self.grafo[v]:
+            if self.visitado[i] is False:
+                self.percorre_adiciona_pilha(i, pilhaDeVertices)
 
-    # Function that returns reverse (or transpose) of this graph
-    def getTranspose(self):
-        g = Graph(self.V)
+        # Adiciona o vértice visitado à pilha
+        pilhaDeVertices = pilhaDeVertices.append(v)
 
-        # Recur for all the vertices adjacent to this vertex
-        for i in self.graph:
-            for j in self.graph[i]:
-                g.addEdge(j,i)
-        return g
+    # Para obter o grafo reverso (transposta da matriz de adjacências)
+    def cria_grafo_reverso(self):
+        gReverso = Grafo(self.nVertices)
 
+        # Para cada aresta incidente exteriormente do grafo original,
+        # Tomá-la como incidente internamente
+        for vertice in self.grafo:
+            for adjacente in self.grafo[vertice]:
+                gReverso.adiciona_aresta(adjacente, vertice)
+        return gReverso
 
+    def componentes_f_conexas(self):
+        pilhaDeVertices = list()
 
-    # The main function that finds and prints all strongly
-    # connected components
-    def printSCCs(self):
+        # Coloca vértices na pilha de acordo com a recursão da busca
+        for i in range(self.nVertices):
+            if self.visitado[i] is False:
+                self.percorre_adiciona_pilha(i, pilhaDeVertices)
 
-         stack = []
-        # Mark all the vertices as not visited (For first DFS)
-        visited =[False]*(self.V)
-        # Fill vertices in stack according to their finishing
-        # times
-        for i in range(self.V):
-            if visited[i]==False:
-                self.fillOrder(i, visited, stack)
+        # Cria um grafo reverso
+        grafoReverso = self.cria_grafo_reverso()
 
-        # Create a reversed graph
-         gr = self.getTranspose()
-
-         # Mark all the vertices as not visited (For second DFS)
-         visited =[False]*(self.V)
-
-         # Now process all vertices in order defined by Stack
-         while stack:
-             i = stack.pop()
-             if visited[i]==False:
-                gr.DFSUtil(i, visited)
-                print""
-
-# Create a graph given in the above diagram
-g = Graph(5)
-g.addEdge(1, 0)
-g.addEdge(0, 2)
-g.addEdge(2, 1)
-g.addEdge(0, 3)
-g.addEdge(3, 4)
+        nComponentes = 1
+        # Printar vértices do da pilha de busca do grafo reverso
+        while pilhaDeVertices:
+            i = pilhaDeVertices.pop()
+            if grafoReverso.visitado[i] is False:
+                print(f"Componente nº {nComponentes}:")
+                grafoReverso.busca(i)
+                print("\n")
+                nComponentes += 1
 
 
-print ("Following are strongly connected components " +
-                           "in given graph")
-g.printSCCs()
+g = Grafo(5)
+g.adiciona_aresta(1, 0)
+g.adiciona_aresta(0, 2)
+g.adiciona_aresta(2, 1)
+g.adiciona_aresta(0, 3)
+g.adiciona_aresta(3, 4)
+
+
+print("As seguintes componentes são f-conexas:")
+g.componentes_f_conexas()
