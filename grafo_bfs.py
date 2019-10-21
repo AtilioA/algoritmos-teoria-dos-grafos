@@ -17,21 +17,21 @@ class Graph:
     # Fazer BFS de um grafo e printar
     def BFS(self, inicio):
         # Marca os vértices como não visitados
-        visited = [False] * (len(self.graph) + 1)
+        visitado = [False] * (len(self.graph) + 1)
 
         # Cria uma fila para o BFS
         # (deque = Double Ended Queue)
-        queue = deque()
+        filaDeVertices = deque()
 
         # Marca o vértice de entrada e enfileira-o
-        queue.append(inicio)
-        visited[inicio] = True
+        filaDeVertices.append(inicio)
+        visitado[inicio] = True
 
         # Enquanto a fila tiver vértices
-        while queue:
-            print(f"Fila atual: {queue}")
+        while filaDeVertices:
+            print(f"Fila atual: {filaDeVertices}")
             # Desenfileira um vértice e printa
-            desenfileirado = queue.popleft()
+            desenfileirado = filaDeVertices.popleft()
             print(f"Vértice visitado: {desenfileirado}")
 
             # Pega os adjacentes ao vértice desenfileirado
@@ -41,33 +41,33 @@ class Graph:
                 print(f"Adjacentes a {desenfileirado}:")
                 print(adj)
 
-                if visited[adj] is False:
+                if visitado[adj] is False:
                     print(f"{adj} foi marcado e enfileirado.")
-                    visited[adj] = True
-                    queue.append(adj)
+                    visitado[adj] = True
+                    filaDeVertices.append(adj)
                 else:
                     print(f"{adj} já foi marcado.")
             print()
 
     def BFS_print(self, inicio):
-        visited = [False] * (len(self.graph) + 1)
-        visited[inicio] = True
+        visitado = [False] * (len(self.graph) + 1)
+        visitado[inicio] = True
 
-        queue = deque()
-        queue.append(inicio)
+        filaDeVertices = deque()
+        filaDeVertices.append(inicio)
 
-        while queue:
-            desenfileirado = queue.popleft()
+        while filaDeVertices:
+            desenfileirado = filaDeVertices.popleft()
             print(f"{desenfileirado:3}\n")
 
             for adj in self.graph[desenfileirado]:
-                if visited[adj] is False:
-                    visited[adj] = True
-                    queue.append(adj)
+                if visitado[adj] is False:
+                    visitado[adj] = True
+                    filaDeVertices.append(adj)
 
 
+# Inicializando um grafo e adiciona arestas
 g = Graph(9)
-# Cria um grafo e adiciona arestas
 g.adiciona_aresta(0, 1)
 g.adiciona_aresta(0, 2)
 g.adiciona_aresta(2, 3)
@@ -79,8 +79,8 @@ g.adiciona_aresta(4, 8)
 
 print(f"\nGrafo: {g.graph.items()}")
 
-s = 0
+verticeInicial = 0
 print(f"\nRealizando busca em amplitude (breadth-first traversal)\
-      começando do vértice {s}:\n")
-g.BFS(s)
-g.BFS_print(s)
+      começando do vértice {verticeInicial}:\n")
+g.BFS(verticeInicial)
+g.BFS_print(verticeInicial)
