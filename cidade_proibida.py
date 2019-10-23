@@ -26,6 +26,7 @@ class Grafo:
             self.aberto[indiceMenor] = False
 
             vizinhos = [x for x in self.adjs[indiceMenor] if self.aberto[x[0]]]
+
             for vizinho in vizinhos:
                 custo = min(distV[vizinho[0]], distV[indiceMenor] + vizinho[1])
                 distV[vizinho[0]] = custo
@@ -42,6 +43,7 @@ if __name__ == "__main__":
             break
 
         g = Grafo(N)
+        # print(f"{N}, {M}\n")
 
         for vertice in range(M):
             entradaArestas = input().strip().split(' ')
@@ -49,10 +51,13 @@ if __name__ == "__main__":
             V = int(entradaArestas[0]) - 1
             W = int(entradaArestas[1]) - 1
             g.adiciona_aresta(V, W, 1)
+            # print(V, W)
 
         entradaCidades = input().strip().split(' ')
+        # print(C,)
         C = int(entradaCidades[0]) - 1
         R = int(entradaCidades[1]) - 1
+        # print(entradaCidades)
         E = int(entradaCidades[2]) - 1
 
         # print(g.adjs.items())
