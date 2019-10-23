@@ -5,36 +5,23 @@ from collections import defaultdict
 class Grafo:
     def __init__(self, nVertices):
         # default dictionary para armazenar o grafo
-        self.grafo = defaultdict(list)
-        self.nVertices = nVertices
-        self.visif.grafo = defaultdict(list)
+        self.adjs = defaultdict(list)
         self.nVertices = nVertices
         self.visitado = [False] * (self.nVertices)
         # Inicializa listas de adjacências dos vértices
         for i in range(nVertices):
-            self.grafo[i] = []
+            self.adjs[i] = []
 
     def adiciona_aresta(self, u, v):
         # O vértice u possui aresta incidindo exteriormente para v
-        self.grafo[u].append(v)
-
-    def busca(self, v):
-        # Marca o vértice de entrada como visitado
-        self.visitado[v] = Truetado = [False] * (self.nVertices)
-        # Inicializa listas de adjacências dos vértices
-        for i in range(nVertices):
-            self.grafo[i] = []
-
-    def adiciona_aresta(self, u, v):
-        # O vértice u possui aresta incidindo exteriormente para v
-        self.grafo[u].append(v)
+        self.adjs[u].append(v)
 
     def busca(self, v):
         # Marca o vértice de entrada como visitado
         self.visitado[v] = True
 
         # Recursão com os vértices adjacentes ao de entrada
-        for i in self.grafo[v]:
+        for i in self.adjs[v]:
             if self.visitado[i] is False:
                 self.busca(i)
 
@@ -43,7 +30,7 @@ class Grafo:
         self.visitado[v] = True
 
         # Recursão com os vértices adjacentes ao de entrada
-        for i in self.grafo[v]:
+        for i in self.adjs[v]:
             if self.visitado[i] is False:
                 self.percorre_adiciona_pilha(i, pilhaDeVertices)
 
@@ -56,8 +43,8 @@ class Grafo:
 
         # Para cada aresta incidente exteriormente do grafo original,
         # Tomá-la como incidente internamente
-        for vertice in self.grafo:
-            for adjacente in self.grafo[vertice]:
+        for vertice in self.adjs:
+            for adjacente in self.adjs[vertice]:
                 gReverso.adiciona_aresta(adjacente, vertice)
         return gReverso
 
