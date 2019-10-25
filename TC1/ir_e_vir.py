@@ -97,4 +97,3 @@ if __name__ == "__main__":
             print(0)
         else:
             print(1)
-        print(g.adjs)
