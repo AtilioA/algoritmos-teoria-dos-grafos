@@ -159,3 +159,4 @@ dmypy.json
 *.out
 .vscode
 *.json
+*.class

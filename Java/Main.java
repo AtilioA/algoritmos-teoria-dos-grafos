@@ -85,28 +85,22 @@ class Edge {
 }
 
 class Graph {
-    ArrayList<Vertex> vertices;
+    Map<Integer, ArrayList<Integer>> vertices = new HashMap<Integer, ArrayList<Integer>>();
+    int nVertices;
+    List<Boolean> visited;
 
-    public Graph() {
-        this.vertices = new ArrayList<Vertex>();
-    }
-
-    public Graph(ArrayList<Vertex> vertices) {
-        super();
-        this.vertices = vertices;
-    }
-
-    public ArrayList<Vertex> getVertices() {
-        return vertices;
-    }
-
-    public void setVertices(ArrayList<Vertex> vertices) {
-        this.vertices = vertices;
+    public Graph(int nVertices) {
+        this.nVertices = nVertices;
+        for (int i = 0; i < nVertices; i++) {
+            // System.out.println("Initializing " + i + " vertex's adjacency list");
+            this.vertices.computeIfAbsent(i, k -> new ArrayList<Integer>()).add(null);
+            this.vertices.get(i).remove(null); // Unbelievable workarounds
+        }
     }
 
     public void addConnection(int u, int v){
-        this.vertices.get(u - 1).adjacency.add(v);
-        this.vertices.get(v - 1).adjacency.add(u);
+        this.vertices.get(u - 1).add(v - 1);
+        this.vertices.get(v - 1).add(u - 1);
     }
 }
 
@@ -115,7 +109,7 @@ public class Main {
         // Testing HashMap to store adjacency vertices
         Map<Integer, List<Integer>> dictionary = new HashMap<Integer, List<Integer>>();
         dictionary.computeIfAbsent(10, k -> new ArrayList<>()).add(5);
-        dictionary.computeIfAbsent(10, k -> new ArrayList<>()).add(3);
+        dictionary.computeIfAbsent(10, k -> new ArrayList<>()).add(666);
         dictionary.computeIfAbsent(10, k -> new ArrayList<>()).add(2);
         dictionary.computeIfAbsent(10, k -> new ArrayList<>()).add(1);
         System.out.println("Vertices adjacent to vertex 10: " + dictionary.get(10));
@@ -130,7 +124,6 @@ public class Main {
         vertices.add(v1);
         vertices.add(v2);
         vertices.add(v3);
-
         System.out.println("\nVertices infos:\n");
         for (int i = 0; i < vertices.size(); i++) {
             System.out.println(vertices.get(i).getID() + ", connected to " + vertices.get(i).getAdjacency());
@@ -138,12 +131,21 @@ public class Main {
 
         System.out.println("\nCreating undirected graph and adding connections:");
         Graph graph;
-        graph = new Graph(vertices);
-        graph.addConnection(1, 3);
-        graph.addConnection(2, 3);
+        graph = new Graph(5);
 
-        for (int i = 0; i < graph.getVertices().size(); i++) {
-            System.out.println(graph.getVertices().get(i).getID() + ", connected to " + graph.getVertices().get(i).getAdjacency());
+        for (int i = 0; i < graph.nVertices; i++) {
+            System.out.println("Vertices adjacent to vertex " + i + ": " + graph.vertices.get(i));
+        }
+
+        System.out.println("Connecting vertices:");
+        graph.addConnection(2, 1);
+        graph.addConnection(1, 3);
+        graph.addConnection(3, 2);
+        graph.addConnection(1, 4);
+        graph.addConnection(4, 5);
+
+        for (int i = 0; i < graph.nVertices; i++) {
+            System.out.println("Vertices adjacent to vertex " + i + ": " + graph.vertices.get(i));
         }
     }
 }
