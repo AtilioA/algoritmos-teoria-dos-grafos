@@ -1,67 +1,53 @@
+from aresta import Aresta
+from insert import insert_sort
 from collections import defaultdict
 
+def kruskal(arestas):
+    arestas, vertices = insert_sort(arestas, defaultdict())
 
-def tupla2(tupla):
-    return tupla[1]
+    # Inicializa a árvore de fato
+    arvore = list()
+    # vertices terá o número de chaves do dicionário retornado pelo insertion_sort
+    tamanhoArvore = len(vertices.keys())
+    i = 0
 
+    # Enquanto o tamanho da árvore é menor que o tamanho do dicionário de vértices,
+    while len(arvore) < tamanhoArvore - 1:
+        # Utilizamos todas as arestas
+        aresta = arestas[i]
+        i += 1
 
-# Grafo não direcionado com lista de adjacências
-class Grafo:
-    def __init__(self, nVertices):
-        # default dictionary para armazenar o grafo
-        self.grafo = defaultdict(list)
-        self.nVertices = nVertices
-        self.nArestas = 0
-        self.visitado = [False] * (self.nVertices)
-        # Inicializa listas de adjacências dos vértices
-        for i in range(nVertices):
-            self.grafo[i] = []
+        # Para verificar o peso das arestas com o dicionário
+        if vertices[aresta.first] < 2 and vertices[aresta.second] < 2:
+            vertices[aresta.first] += 1
+            vertices[aresta.second] += 1
+            arvore.append(aresta)
+    # Não se utiliza todo o dicionário pois o tamanho da árvore quebra o while antes disso
 
-    def adiciona_aresta(self, u, v, p):
-        # O vértice u possui aresta incidindo exteriormente para v
-        self.grafo[u].append(((u, v), p))
-        self.grafo[v].append(((v, u), p))
-        self.nArestas += 1
-
-    def remove_aresta(self, u, v, p):
-        # O vértice u possui aresta incidindo exteriormente para v
-        self.grafo[u].remove(((u, v), p))
-        self.grafo[v].remove(((v, u), p))
-        self.nArestas -= 1
-
-    def busca(self, v):
-        # Marca o vértice de entrada como visitado
-        self.visitado[v] = True
-        print(v, end=' ')
-
-        # Recursão com os vértices adjacentes ao de entrada
-        for i in self.grafo[v]:
-            if self.visitado[i] is False:
-                self.busca(i)
-
-    def arestas_pra_lista(self):
-        arestas = list()
-        for vertice in g.grafo:
-            arestas += g.grafo[vertice]
-        return arestas
-
-    def kruskal(self):
-        arestas = self.arestas_pra_lista()
-        arestas.sort(key=tupla2)
-
-        T = Grafo(self.nVertices)
-
-        for aresta in arestas:
+    return arvore
 
 
 if __name__ == "__main__":
-    g = Grafo(5)
-    # print(g.grafo)
-    # for vertice in g.grafo:
-    #     print(vertice)
-    #     print(type(vertice))
-    #     print(g.grafo[vertice])
-    g.adiciona_aresta(0, 1, 1000)
-    g.adiciona_aresta(0, 4, 1)
-    g.adiciona_aresta(1, 3, 5)
-    # print(g.grafo)
+    arestas = list()
+    # arestas.append(Aresta(1, 'a', 'b'))
+    # arestas.append(Aresta(8, 'a', 'c'))
+    # arestas.append(Aresta(3, 'c', 'b'))
+    # arestas.append(Aresta(4, 'b', 'd'))
+    # arestas.append(Aresta(2, 'd', 'e'))
+    # arestas.append(Aresta(3, 'b', 'e'))
+    # arestas.append(Aresta(-1, 'c', 'd'))
+    arestas.append(Aresta(13, '0', '3'))
+    arestas.append(Aresta(24, '0', '1'))
+    arestas.append(Aresta(13, '0', '2'))
+    arestas.append(Aresta(22, '0', '4'))
+    arestas.append(Aresta(13, '1', '3'))
+    arestas.append(Aresta(22, '1', '2'))
+    arestas.append(Aresta(13, '1', '4'))
+    arestas.append(Aresta(19, '2', '3'))
+    arestas.append(Aresta(14, '2', '4'))
+    arestas.append(Aresta(19, '3', '4'))
+
+    grafo = kruskal(arestas)
+    print("Imprimindo árvore geradora mínima:")
+    for aresta in grafo:
+        print(f"Peso {aresta.peso:2}: {aresta.first:1} para {aresta.second:2}")
