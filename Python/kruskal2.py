@@ -11,7 +11,7 @@ class Grafo:
         # default dictionary para armazenar o grafo
         self.adjs = defaultdict(list)
         self.nVertices = nVertices
-        # self.nArestas = 0
+        self.peso = 0
         self.visitado = [False] * (self.nVertices)
         # Inicializa listas de adjacências dos vértices
         for i in range(nVertices):
@@ -19,17 +19,19 @@ class Grafo:
 
     def adiciona_aresta(self, u, v, p):
         # O vértice u possui aresta incidindo exteriormente para v
+        self.peso += p
+
         self.adjs[u].append(((u, v), p))
         self.adjs[v].append(((v, u), p))
-        # self.nArestas += 1
 
     def remove_aresta(self, u, v, p):
         # O vértice u possui aresta incidindo exteriormente para v
+        self.peso -= p
+
         self.adjs[u].remove(((u, v), p))
         self.adjs[v].remove(((v, u), p))
-        # self.nArestas -= 1
 
-    def busca(self, v):
+    def tem_ciclo(self, v):
         # Marca o vértice de entrada como visitado
         self.visitado[v] = True
         ciclico = False
@@ -58,7 +60,8 @@ class Grafo:
                 ciclico = True
         return ciclico
 
-    def tem_ciclo(self, v, anterior):
+    # Não funciona; apenas para fins de recordação
+    def tem_ciclo2(self, v, anterior):
         # Marca o vértice de entrada como visitado
         self.visitado[v] = True
         # print(f"Vértice atual: {v}.\nVértice anterior: {anterior}\n")
@@ -90,10 +93,14 @@ class Grafo:
 
         for aresta in arestas:
             T.adiciona_aresta(aresta[0][0], aresta[0][1], aresta[1])
-            if not T.busca(0):
+            if not T.tem_ciclo(0):
                 continue
             else:
                 T.remove_aresta(aresta[0][0], aresta[0][1], aresta[1])
+
+        # TODO: refatorar a lógica disso pra não incluir aresta e peso repetidos
+        for vertice in range(self.nVertices):
+            T.adjs[vertice] = list(dict.fromkeys(T.adjs[vertice]))
 
         return T
 
@@ -109,6 +116,6 @@ if __name__ == "__main__":
         # print(vertice)
         # print(g.adjs[vertice])
 
-    # print(f'\nG tem ciclo? {g.busca(0)}')
+    print(f"G tem ciclo? {g.tem_ciclo(0)}\n")
     T = g.kruskal()
-    print(dict(T.adjs.items()))
+    print(f"Imprimindo árvore geradora mínima de G, peso (ERRADO) {T.peso}:\n{dict(T.adjs.items())}")
