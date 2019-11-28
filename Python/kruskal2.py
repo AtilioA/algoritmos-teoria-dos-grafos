@@ -1,5 +1,7 @@
+import random
+import matplotlib.pyplot as plt
+import networkx as nx
 from collections import defaultdict
-
 
 def tupla2(tupla):
     return tupla[1]
@@ -17,19 +19,17 @@ class Grafo:
         for i in range(nVertices):
             self.adjs[i] = []
 
-    def adiciona_aresta(self, u, v, p):
+    def adiciona_aresta(self, u, v, peso):
         # O vértice u possui aresta incidindo exteriormente para v
-        self.peso += p
+        self.adjs[u].append(((u, v), peso))
+        self.adjs[v].append(((v, u), peso))
+        self.peso += peso
 
-        self.adjs[u].append(((u, v), p))
-        self.adjs[v].append(((v, u), p))
-
-    def remove_aresta(self, u, v, p):
+    def remove_aresta(self, u, v, peso):
         # O vértice u possui aresta incidindo exteriormente para v
-        self.peso -= p
-
-        self.adjs[u].remove(((u, v), p))
-        self.adjs[v].remove(((v, u), p))
+        self.adjs[u].remove(((u, v), peso))
+        self.adjs[v].remove(((v, u), peso))
+        self.peso -= peso
 
     def tem_ciclo(self, v):
         # Marca o vértice de entrada como visitado
@@ -86,6 +86,7 @@ class Grafo:
         return arestas
 
     def kruskal(self):
+        # print(dict(self.adjs))
         arestas = self.arestas_pra_lista()
         arestas.sort(key=tupla2)
 
@@ -93,29 +94,71 @@ class Grafo:
 
         for aresta in arestas:
             T.adiciona_aresta(aresta[0][0], aresta[0][1], aresta[1])
-            if not T.tem_ciclo(0):
+            if not T.tem_ciclo(aresta[0][0]):
                 continue
             else:
                 T.remove_aresta(aresta[0][0], aresta[0][1], aresta[1])
 
-        # TODO: refatorar a lógica disso pra não incluir aresta e peso repetidos
-        for vertice in range(self.nVertices):
-            T.adjs[vertice] = list(dict.fromkeys(T.adjs[vertice]))
+        # for vertice in range(self.nVertices):
+        #     T.adjs[vertice] = list(dict.fromkeys(T.adjs[vertice]))
 
         return T
 
 
 if __name__ == "__main__":
     g = Grafo(4)
-    g.adiciona_aresta(0, 1, 0)
-    g.adiciona_aresta(0, 2, 1)
-    g.adiciona_aresta(1, 3, 2)
-    g.adiciona_aresta(3, 0, 9)
-    # print(g.adjs)
-    # for vertice in g.adjs:
-        # print(vertice)
-        # print(g.adjs[vertice])
+    g.adiciona_aresta(0, 1, 2)
+    g.adiciona_aresta(0, 3, -10)
+    g.adiciona_aresta(0, 2, 3)
+    g.adiciona_aresta(1, 2, 5)
+    g.adiciona_aresta(1, 3, 0)
+    g.adiciona_aresta(2, 3, 4)
+    print(f"Grafo:\n{dict(g.adjs)}")
+    for vertice in g.adjs:
+        print(f"Vizinhos do vértice {vertice}:")
+        print(g.adjs[vertice])
 
-    print(f"G tem ciclo? {g.tem_ciclo(0)}\n")
+    print(f"\nG tem ciclo? {g.tem_ciclo(0)}!\n")
     T = g.kruskal()
-    print(f"Imprimindo árvore geradora mínima de G, peso (ERRADO) {T.peso}:\n{dict(T.adjs.items())}")
+
+    G2 = nx.Graph()
+    i = 0
+    for vertice, arestas in g.adjs.items():
+        print([(vertice, aresta[0][1]) for aresta in arestas])
+        G2.add_node(vertice, pos=(random.randint(0, 5),i))
+        G2.add_node(vertice, pos=(random.randint(0, 5),i))
+        i += 1
+        G2.add_weighted_edges_from([(vertice, aresta[0][1], aresta[1]) for aresta in arestas])
+
+    T2 = nx.Graph()
+    i = 0
+    pos = nx.get_node_attributes(G2,'pos')
+    print(pos)
+    for vertice, arestas in T.adjs.items():
+        print([(vertice, aresta[0][1]) for aresta in arestas])
+        print(f"Posicao: {pos[i]}")
+        T2.add_node(vertice, pos=(pos[i]))
+        T2.add_node(vertice, pos=(random.randint(0, 5),i))
+        i += 1
+        T2.add_weighted_edges_from([(vertice, aresta[0][1], aresta[1]) for aresta in arestas])
+
+
+    # nx.draw(T2)
+    # nx.draw_random(T2)
+
+    plt.figure(1)
+    pos = nx.get_node_attributes(T2,'pos')
+    nx.draw(T2, pos)
+    labelPesos = nx.get_edge_attributes(T2,'weight')
+    nx.draw_networkx_edge_labels(T2, pos, edge_labels=labelPesos)
+
+    plt.figure(2)
+    pos = nx.get_node_attributes(G2,'pos')
+    nx.draw(G2, pos)
+    labelPesos = nx.get_edge_attributes(G2,'weight')
+    nx.draw_networkx_edge_labels(G2, pos, edge_labels=labelPesos)
+
+
+    plt.show()
+
+    print(f"Imprimindo árvore geradora mínima de G, que possui peso {T.peso}:\n{dict(T.adjs.items())}")
