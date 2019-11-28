@@ -1,3 +1,5 @@
+# Supostamente não funciona
+
 from aresta import Aresta
 from insert import insert_sort
 from collections import defaultdict
@@ -36,16 +38,24 @@ if __name__ == "__main__":
     # arestas.append(Aresta(2, 'd', 'e'))
     # arestas.append(Aresta(3, 'b', 'e'))
     # arestas.append(Aresta(-1, 'c', 'd'))
-    arestas.append(Aresta(13, '0', '3'))
-    arestas.append(Aresta(24, '0', '1'))
-    arestas.append(Aresta(13, '0', '2'))
-    arestas.append(Aresta(22, '0', '4'))
-    arestas.append(Aresta(13, '1', '3'))
-    arestas.append(Aresta(22, '1', '2'))
-    arestas.append(Aresta(13, '1', '4'))
-    arestas.append(Aresta(19, '2', '3'))
-    arestas.append(Aresta(14, '2', '4'))
-    arestas.append(Aresta(19, '3', '4'))
+
+    # arestas.append(Aresta(13, '0', '3'))
+    # arestas.append(Aresta(24, '0', '1'))
+    # arestas.append(Aresta(13, '0', '2'))
+    # arestas.append(Aresta(22, '0', '4'))
+    # arestas.append(Aresta(13, '1', '3'))
+    # arestas.append(Aresta(22, '1', '2'))
+    # arestas.append(Aresta(13, '1', '4'))
+    # arestas.append(Aresta(19, '2', '3'))
+    # arestas.append(Aresta(14, '2', '4'))
+    # arestas.append(Aresta(19, '3', '4'))
+
+    arestas.append(Aresta(2, "0", "1"))
+    arestas.append(Aresta(-10, "0", "3"))
+    arestas.append(Aresta(3, "0", "2"))
+    arestas.append(Aresta(5, "1", "2"))
+    arestas.append(Aresta(0, "1", "3"))
+    arestas.append(Aresta(4, "2", "3"))
 
     grafo = kruskal(arestas)
     print("Imprimindo árvore geradora mínima:")

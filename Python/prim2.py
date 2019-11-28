@@ -1,63 +1,60 @@
-from collections import defaultdict
+import random
+from math import inf
 
-class Grafo:
-    def __init__(self, nVertices):
-        self.adjs = defaultdict(list)
-        self.nVertices = nVertices
-        self.peso = 0
-        # Inicializa todos os vértices acessando o defaultdict
-        for vertice in range(nVertices):
-            self.adjs[vertice]
+from aresta import Aresta
 
-    def adiciona_aresta(self, u, v, peso):
-        self.peso += peso
-        self.adjs[u].append((v, peso))
-        self.adjs[v].append((u, peso))
 
-    def getPeso(self, u, v):
-        peso = float("inf")
-        for i in self.adjs[u]:
-            if i[0] == v:
-                peso = i[1]
-                break
-        return peso
+def prim(grafo):
+    # Inicializa a árvore geradora mínima
+    arvore = []
+    # Pega um vértice inicial qualquer
+    vertice = 0  # vértice aleatório -> random.randint(0, len(grafo) - 1)
+    # Inicializa fila sem elementos repetidos para comparar pesos de arestas
+    filaSet = set()
+    filaSet.add(vertice)
 
-    def prim(self):
-        T = Grafo(self.nVertices)
-        Vl = {0}
-        L = [float("inf")] * self.nVertices
-        V = set(range(self.nVertices))
+    # Enquanto a árvore tem menos vértices que o grafo,
+    while len(arvore) < len(grafo) - 1:
+        # Inicializa variáveis do while
+        min = inf
+        vertice = None
+        outroVertice = None
 
-        for v in self.adjs[0]:
-            L[v[0]] = v[1]
+        # Pra cada vértice U da fila,
+        for verticeU in filaSet:
+            # Pra cada vértice V do grafo,
+            for verticeV in range(len(grafo)):
+                # Se o peso da aresta entre U e V for menor que o mínimo
+                if grafo[verticeU][verticeV] < min:
+                    # Atualiza mínimo
+                    min = grafo[verticeU][verticeV]
+                    # Guarda valores para mais tarde
+                    vertice = verticeU
+                    outroVertice = verticeV
 
-        while V - Vl:
-            w = L.index(min([L[x] for x in (V - Vl)]))
-            wAdjs = [x for x in self.adjs[w] if x[0] in Vl]
+        # Adiciona "último verticeV" para comparação posterior
+        filaSet.add(outroVertice)
+        # Adiciona aresta entre "últimos" U e V na árvore, já que é mínima
+        arvore.append(Aresta(grafo[vertice][outroVertice], vertice, outroVertice))
 
-            pesos = list(map(lambda x: x[1], wAdjs))
-            menorPeso = min(pesos)
-            indiceMenor = pesos.index(menorPeso)
-            u = wAdjs[indiceMenor][0]
+        # "Retira" os dois vértices da comparação pois já foram checados
+        # Nos dois sentidos pois o grafo é simples e a matriz é simétrica
+        grafo[vertice][outroVertice] = inf
+        grafo[outroVertice][vertice] = inf
+        # Alteramos o grafo, mas estamos interessados na árvore
 
-            T.adiciona_aresta(u, w , self.getPeso(u, w))
-            Vl = Vl | set({w})
-            for v in (V - Vl):
-                if self.getPeso(v, w) < L[v]:
-                    L[v] = self.getPeso(v, w)
-
-        return T
+    return arvore
 
 
 if __name__ == "__main__":
-    G = Grafo(4)
-    G.adiciona_aresta(0, 1, 2)
-    G.adiciona_aresta(0, 3, -10)
-    G.adiciona_aresta(0, 2, 3)
-    G.adiciona_aresta(1, 2, 5)
-    G.adiciona_aresta(1, 3, 0)
-    G.adiciona_aresta(2, 3, 4)
-    print(f"Grafo G:\n{dict(G.adjs.items())}")
+    grafo = [[inf, 1, inf, inf, 1, inf],
+             [1, inf, 2, 3, inf, 1],
+             [inf, 2, inf, 4, 2, 3],
+             [inf, 3, 4, inf, 2, 3],
+             [1, inf, 2, 2, inf, 3],
+             [inf, 1, 3, 3, 3, inf]]
 
-    T = G.prim()
-    print(f"Árvore geradora mínima de G, peso {T.peso}:\n{dict(T.adjs.items())}")
+    grafo = prim(grafo)
+    print("Imprimindo árvore geradora mínima:")
+    for aresta in grafo:
+        print(f"Peso {aresta.peso} - {aresta.first} {aresta.second}")
