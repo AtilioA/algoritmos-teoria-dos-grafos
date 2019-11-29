@@ -125,7 +125,6 @@ class Grafo{
             for(vector<pair<int, int>>::iterator i = this->adj[v].begin(); i != this->adj[v].end(); i++){
                 if((*i).first == u){
                     this->adj[v].erase(i);
-                    this->peso -= (*i).second;
                     break;
                 }
             }
