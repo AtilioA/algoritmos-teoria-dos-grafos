@@ -6,6 +6,14 @@
 
 using namespace std;
 
+bool encontrar(vector<int> vt, int v){
+    for(int k : vt){
+        if(k == v){
+            return true;
+        }
+    }
+    return false;
+}
 class Grafo{
     private:
         vector<vector<pair<int, int> > > adj;
@@ -57,11 +65,11 @@ class Grafo{
 
             this->adj[v].push_back(ida);
             this->adj[u].push_back(volta);
-            peso += peso;
+            this->peso += peso;
         }
 
         int prim(){
-            Grafo* T = new Grafo(this->nVertices);
+            int peso = 0;
             vector<int> Vl;
             Vl.push_back(0);
             vector<int> L;
@@ -82,59 +90,52 @@ class Grafo{
                 vector<int> pesosDiff;
                 for(int i : diff){
                     pesosDiff.push_back(L[i]);
-                    cout << i << ":";
                 }
-                cout << "\n";
                 int minPeso = *min_element(pesosDiff.begin(), pesosDiff.end());
                 int w = 0;
-                cout << minPeso << " PORRA\n";
                 for(int i = 0; i < L.size(); i++){
-                    if(L[i] == minPeso && *find(diff.begin(), diff.end(), i) == i){
+                    if(L[i] == minPeso && encontrar(diff, i)){
                         w = i;
+                        break;
                     }
                 }
                 int u = Vl[0];
-                for(int i: Vl){
-                    cout << i << "<->";
-                }
-                cout << "\n";
                 for(pair<int, int> ar : this->adj[w]){
-                    cout << ">>" << u << "<<" << ">>" << w << "<<" << ">>" << ar.first << "<<" << this->getPeso(u, w) << ";" << ar.second << "\n";
-                    if(ar.second < this->getPeso(u, w) && *find(Vl.begin(), Vl.end(), ar.first) == ar.first){
+                    if(ar.second < this->getPeso(u, w) && encontrar(Vl, ar.first)){
                         u = ar.first;
-                        cout << ar.first << "EU N QUERO MAIS\n";
                     }
                 }
-                cout << "(" << u << "," << w << ")" << this->getPeso(u, w) << "\n";
-                T->adiciona_aresta(u, w, this->getPeso(u, w));
-                cout << "-------------------------------------------------\n";
+                peso+=this->getPeso(u, w);
                 Vl.push_back(w);
                 sort(Vl.begin(), Vl.end());
                 diff.clear();
                 set_difference(V.begin(), V.end(), Vl.begin(), Vl.end(), inserter(diff, diff.end()));
                 for(int v : diff){
-                    cout << "-------------------============================-------\n";
-                    int p = this->getPeso(u, w);
+                    int p = this->getPeso(v, w);
                     if(p < L[v]){
                         L[v] = p;
                     }
                 }
             }
-            int pesoArv = T->getPesoGrafo();
-            delete T;
-            return pesoArv;
+            return peso;
         };
 };
 
 int main(){
-    Grafo* g = new Grafo(5);
-    g->adiciona_aresta(1 - 1, 2 - 1, 15);
-    g->adiciona_aresta(1 - 1, 3 - 1, 10);
-    g->adiciona_aresta(2 - 1, 3 - 1, 1);
-    g->adiciona_aresta(3 - 1, 4 - 1, 3);
-    g->adiciona_aresta(2 - 1, 4 - 1, 5);
-    g->adiciona_aresta(4 - 1, 5 - 1, 20);
-    //g->printVertices();
+    int n;
+    int m;
+    cin >> n;
+    cin >> m;
+    Grafo* g = new Grafo(n);
+    for(int i = 0; i < m; i++){
+        int u;
+        int v;
+        int p;
+        cin >> u;
+        cin >> v;
+        cin >> p;
+        g->adiciona_aresta(u - 1, v - 1, p);
+    }
     cout << g->prim() << endl;
     delete g;
     return 0;
